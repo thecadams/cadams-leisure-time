@@ -18,7 +18,7 @@
     = @activity.name
   %p
     %strong URL:
-    = link_to @activity.url, @activity.url
+    = link_to @activity.url, @activity.url, target: '_blank'
   %p
     %strong= @activity.done ? 'Done' : 'Not done'
     = form_for :activity, method: :put do |f|
@@ -45,7 +45,7 @@
   - @activities.each do |activity|
     %tr
       %td= activity.name
-      %td= link_to @activity.url, @activity.url
+      %td= link_to @activity.url, @activity.url, target: '_blank'
       %td= activity.done ? 'Done' : 'Not done'
       %td
         = form_for :activity, method: :put do |f|
