@@ -1,0 +1,57 @@
+- flash.each do |key, msg|
+  %div{id: key}
+    %p{style: 'float:right'}
+    %p
+      = msg
+      %a{href: '#', onclick: "$('##{key}').hide();return false"} X
+    .clear
+
+%h1 Leisure Time Roulette!!
+%p This app chooses a random leisure activity.
+%hr
+- if @activity.nil?
+  %p none yet. Add one below!
+- else
+  %h2 You should chillax and do:
+  %p
+    %strong Name:
+    = @activity.name
+  %p
+    %strong URL:
+    = @activity.url
+  %p
+    %strong= @activity.done ? 'Done' : 'Not done'
+    = form_for :activity, method: :put do |f|
+      = f.hidden_field :id, value: @activity.id
+      = f.submit (@activity.done ? 'Mark not done' : 'Mark done')
+%hr
+%h2 Add a new one:
+= form_for :activity do |f|
+  %p
+    %strong Name:
+    = f.text_field :name
+  %p
+    %strong URL:
+    = f.text_field :url
+  = f.submit
+%hr
+%a#show-all{href: '#', onclick: "$('#all').show();$('#show-all').hide();return false"} Show all
+%table#all{style: 'display:none'}
+  %thead
+    %tr
+      %td Name
+      %td URL
+      %td{colspan: 2} Actions
+  - @activities.each do |activity|
+    %tr
+      %td= activity.name
+      %td= activity.url
+      %td= activity.done ? 'Done' : 'Not done'
+      %td
+        = form_for :activity, method: :put do |f|
+          = f.hidden_field :id, value: activity.id
+          = f.submit (activity.done ? 'Mark not done' : 'Mark done')
+      %td
+        = form_for :activity, method: :delete do |f|
+          = f.hidden_field :id, value: activity.id
+          = f.submit 'Delete'
